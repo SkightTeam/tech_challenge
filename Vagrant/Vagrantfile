@@ -1,0 +1,24 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+	# General Vagrant VM Configuration.
+	config.vm.box = "centos/7"
+	config.ssh.insert_key = false
+	config.vm.provider :virtualbox do |v|
+	  v.memory = 256
+	  v.linkd_clone = true
+	end
+	
+	# MySQL Machine
+	config.vm.define "mysql" do |mysql|
+	  mysql.vm.hostname = "mysql1.local"
+	end
+	
+	# Backup Machine
+	config.vm.define "backup" do |backup|
+	  backup.vm.hostname = "backup1.local"
+	end
+end
