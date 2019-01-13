@@ -9,7 +9,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	config.ssh.insert_key = false
 	config.vm.provider :virtualbox do |v|
 	  v.memory = 256
-	  v.linkd_clone = true
 	end
 	
 	# MySQL Machine
