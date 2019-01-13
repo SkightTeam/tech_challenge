@@ -1,0 +1,7 @@
+---
+
+root_db_password: Password123
+mysql_database: global_relay
+backup_file: full-backup-$(date +%F).sql
+backup_target: 192.168.60.6
+backup_path: $HOME/full-backup-*

@@ -14,10 +14,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	# MySQL Machine
 	config.vm.define "mysql" do |mysql|
 	  mysql.vm.hostname = "mysql1.local"
+      mysql.vm.network :private_network, ip: "192.168.60.5"
 	end
 	
 	# Backup Machine
 	config.vm.define "backup" do |backup|
 	  backup.vm.hostname = "backup1.local"
+      backup.vm.network :private_network, ip: "192.168.60.6"
 	end
+    
+    # Provision configuration with Ansible
+    config.vm.provision "ansible" do |ansible|
+      ansible.playbook = "playbook.yml"
+    end
 end

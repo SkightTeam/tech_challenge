@@ -1,0 +1,20 @@
+--- # Schedule full MySQL backup as well as backup file transfer
+  
+- hosts: mysql
+  become: yes
+  vars_files: vars.yml
+
+  tasks:
+    - name: Perform full scheduled MySQL backup
+      cron:
+       user: root
+       minute: 00
+       hour: 22
+       job: "mysqldump --all-databases --single-transaction --quick --lock-tables=false > $HOME/{{backup_file}} -u root -p{{root_db_password}} | gzip -c > $HOME/{{backup_file}}.gz"
+      
+    - name: Copy backup file to backup server # Previous SSH key copy is required
+      cron:
+       user: root
+       minute: 00
+       hour: 02
+       job: "scp -v $HOME/full-backup-* root@{{ backup_target }}:$HOME/"

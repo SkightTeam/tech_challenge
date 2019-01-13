@@ -1,0 +1,13 @@
+--- # Back up MySQL databases and copy file to remote server.
+  
+- hosts: mysql
+  become: yes
+  vars_files: vars.yml
+
+  tasks:
+    - name: Perform full MySQL backup
+      shell: "mysqldump --all-databases --single-transaction --quick --lock-tables=false > $HOME/{{backup_file}} -u root -p{{root_db_password}} | gzip -c > $HOME/{{backup_file}}.gz"
+      
+    - name: Copy backup file to backup server # Previous SSH key copy is required
+      shell: "scp -v $HOME/full-backup-* root@{{ backup_target }}:$HOME/"
+      

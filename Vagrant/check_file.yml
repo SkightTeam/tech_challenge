@@ -1,0 +1,12 @@
+--- # Install and Configure MariaDB (MySQL) on RHEL
+  
+- hosts: all
+  become: yes
+  vars_files: vars.yml
+
+  tasks:
+    - name: Verify backup file exists
+      shell: "[ -f $HOME/full-backup-* ] && echo 'File exist' || echo 'File does not exist'"
+      register: backup
+
+    - debug: var=backup

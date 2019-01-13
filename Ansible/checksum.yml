@@ -1,0 +1,17 @@
+---
+- hosts: mysql
+  tasks:
+    - stat:
+        path: "{{ item }}"
+        checksum_algorithm: sha1
+      delegate_to: backup
+      with_fileglob: /$HOME/*.gz
+      register: local_files
+    - stat:
+        path: "/$HOME/{{ item.stat.path | basename }}"
+        checksum_algorithm: sha1
+      failed_when: remote_files.stat.checksum != item.stat.checksum
+      with_items: "{{ local_files.results }}"
+      register: remote_files
+      loop_control:
+        label: "{{ item.stat.path | basename }}"
